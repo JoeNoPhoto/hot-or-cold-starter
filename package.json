@@ -1,0 +1,32 @@
+{
+  "eslintConfig": {
+    "ecmaFeatures": {
+      "arrowFunctions": true,
+      "blockBindings": true,
+      "defaultParams": true,
+      "forOf": true,
+      "jsx": true,
+      "templateStrings": true
+    },
+    "env": {
+      "browser": true,
+      "jasmine": true,
+      "node": true,
+      "jquery": true
+    },
+    "globals": {
+      "jest": true
+    },
+    "rules": {
+      "eqeqeq": 2,
+      "curly": 2,
+      "new-cap": false,
+      "quotes": [
+        2,
+        "single"
+      ],
+      "strict": 0,
+      "semi": [2, "never"]
+    }
+  }
+}
