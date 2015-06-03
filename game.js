@@ -1,48 +1,92 @@
-//*******LOGIC LAYER*******\\
-'use strict'
-// debugger
-function Game() {
-  this.numberToGuess
-  this.initializeGame()
-}
+'use strict';
 
-Game.prototype.initializeGame = function() {
-  this.numberToGuess = Math.floor((Math.random() * 100) + 1)
-  console.log(this.numberToGuess)
-}
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-Game.prototype.evaluateHotness = function(guess) {
-  guess = parseInt(guess)
-  var howCloseWasThisGuess = Math.abs(this.numberToGuess - guess)
-  console.log('Number to Guess: ' + this.numberToGuess)
-  console.log('userGuess: ' + guess)
-  console.log('howClose?: ' + howCloseWasThisGuess)
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-  switch (guess) {
-    case (howCloseWasThisGuess <= 10 && howCloseWasThisGuess >= 1):
-      console.log('Scorching HOT!')
-      break
-    case (howCloseWasThisGuess <= 20 && howCloseWasThisGuess > 10):
-      console.log('Hot')
-      break
-    case (howCloseWasThisGuess <= 30 && howCloseWasThisGuess > 20):
-      console.log('Warm')
-      break
-    case (howCloseWasThisGuess <= 50 && howCloseWasThisGuess > 30):
-      console.log('Cold')
-      break
-    case (howCloseWasThisGuess <= 100 && howCloseWasThisGuess > 50):
-      console.log('ICE COLD!')
-      break
-    case howCloseWasThisGuess > 100:
-      console.log('Too Boku. Pick between 1 and 100.')
-      break
-    default:
-      console.log('Start New Game.')
-      break
-  }
-}
-Game.prototype.takeGuess = function(guess) {
-  this.evaluateHotness(guess)
-}
-window.Game = Game
+!(function () {
+  var Game = (function () {
+    function Game() {
+      _classCallCheck(this, Game);
+
+      this.totalGuesses = [];
+      this.numberToGuess = this.generateNumber();
+      this.$guessList = document.getElementById('guessList');
+      this.$guessButton = document.getElementsByClassName('#guessButton');
+      this.$userGuess = document.getElementsByClassName('#userGuess');
+      this.$guessCount = document.getElementsByClassName('#count');
+      this.$newGame = document.getElementById('.new');
+      this.$overlay = document.getElementById('.overlay');
+    }
+
+    _createClass(Game, [{
+      key: 'startNewGame',
+      value: function startNewGame() {
+        var newGame = new Game();
+        return newGame;
+      }
+    }, {
+      key: 'generateNumber',
+      value: function generateNumber() {
+        return Math.floor(Math.random() * 100 + 1);
+      }
+    }, {
+      key: 'getGuessFromDOM',
+      value: function getGuessFromDOM() {}
+    }, {
+      key: 'createGuessListNode',
+      value: function createGuessListNode(guess) {
+        this.currentGuess = guess;
+        this.currentTemp = Math.abs(this.numberToGuess - this.currentGuess);
+        this.listChild = document.createElement('li');
+        this.$guessList.appendChild(this.listChild).innerHTML = this.currentGuess + ' ' + this.guessTemperature(this.currentTemp) + '<br>';
+        console.log('numberToGuess: ' + this.numberToGuess);
+        console.log('currentGuess: ' + this.currentGuess);
+        console.log('currentTemp: ' + this.currentTemp);
+      }
+    }, {
+      key: 'guessTemperature',
+      value: function guessTemperature(abs) {
+        switch (true) {
+          case abs > 100:
+            return 'is TOOBOKU';
+          case abs > 50:
+            return 'is ICECOLD';
+          case abs > 30:
+            return 'is COLD';
+          case abs > 20:
+            return 'is WARM';
+          case abs > 10:
+            return 'is HOT';
+          case abs >= 1:
+            return 'is On FIYAH!!!';
+          case abs === 0:
+            return 'is Dead On! You NAILED IT!!!';
+        }
+      }
+    }]);
+
+    return Game;
+  })();
+
+  var game = new Game();
+  game.startNewGame();
+  game.createGuessListNode(45);
+
+  /*--- Display information modal box ---*/
+  $('.what').click(function () {
+    $('.overlay').fadeIn(1000);
+  });
+
+  /*--- Hide information modal box ---*/
+  $('a.close').click(function () {
+    $('.overlay').fadeOut(1000);
+  });
+
+  /*--- Start New Game ---*/
+  $('.new').click(function () {
+    $('.game').fadeOut(1000);
+    game.startNewGame();
+    $('.game').fadeIn(1000);
+  });
+})();
