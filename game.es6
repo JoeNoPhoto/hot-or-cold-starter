@@ -1,40 +1,40 @@
-! function() {
   class Game {
     constructor() {
-      this.totalGuesses = []
-      this.numberToGuess = this.generateNumber()
       this.$guessList = document.getElementById('guessList')
-      this.$guessButton = document.getElementsByClassName('#guessButton')
-      this.$userGuess = document.getElementsByClassName('#userGuess')
-      this.$guessCount = document.getElementsByClassName('#count')
-      this.$newGame = document.getElementById('.new')
-      this.$overlay = document.getElementById('.overlay')
+      this.$guess = document.getElementById('guess')
+      this.$guessButton = document.getElementsByClassName('guessButton')
+      this.$userGuess = document.getElementById('userGuess')
+      this.$guessCount = document.getElementById('count')
+      this.$newGame = document.getElementById('new')
+      this.$overlay = document.getElementById('overlay')
+      this.startNewGame()
+
     }
 
     startNewGame() {
-      var newGame = new Game()
-      return newGame
+      this.totalGuessList = []
+      this.numberToGuess = this.generateNumber()
     }
+
     generateNumber() {
       return Math.floor((Math.random() * 100) + 1)
     }
 
-    getGuessFromDOM() {
+    addNewGuess() {
+      const currentGuess = this.$userGuess.value
+      if(currentGuess) {
+        const currentTemp = Math.abs(this.numberToGuess - currentGuess)
+        this.$guess.innerText = currentGuess+ ' ' + this.guessTemperature(currentTemp)
+        this.totalGuessList.push(currentGuess)
+        this.$guessCount.textContent = this.totalGuessList.length
+        this.$userGuess.value = ''
+      }
     }
 
-    createGuessListNode(guess) {
-      this.currentGuess = guess
-      this.currentTemp = Math.abs(this.numberToGuess - this.currentGuess)
-      this.listChild = document.createElement('li')
-      this.$guessList.appendChild(this.listChild).innerHTML = this.currentGuess + " " + this.guessTemperature(this.currentTemp) + '<br>'
-      console.log('numberToGuess: ' + this.numberToGuess)
-      console.log('currentGuess: ' + this.currentGuess)
-      console.log('currentTemp: ' + this.currentTemp)
-    }
     guessTemperature(abs) {
       switch (true) {
         case (abs > 100):
-          return 'is TOOBOKU'
+          return 'is TOOBOKU.' + '\n' + 'Pick a number between 1 and 100'
         case (abs > 50):
           return 'is ICECOLD'
         case (abs > 30):
@@ -46,18 +46,16 @@
         case (abs >= 1):
           return 'is On FIYAH!!!'
         case (abs === 0):
-          return 'is Dead On! You NAILED IT!!!'
+          return 'is Dead On! You NAILED IT!!!' + '\n' + 'Press \'+NEW GAME to Play Again\''
+        default:
+          return 'isn\'t a number.' + '\n' + 'Try again...' + '\n' + '...with a number.'
       }
     }
-
-
-
   }
 
 
     var game = new Game()
     game.startNewGame()
-    game.createGuessListNode(45)
 
 /*--- Display information modal box ---*/
     $(".what").click(function(){
@@ -70,10 +68,15 @@
     		$(".overlay").fadeOut(1000);
     	});
 
+/*--- Take Guess Input ---*/
+  $('#guessButton').click(function(evt) {
+    evt.preventDefault()
+    game.addNewGuess()
+  })
+
 /*--- Start New Game ---*/
     $('.new').click(function() {
         $('.game').fadeOut(1000)
           game.startNewGame()
         $('.game').fadeIn(1000)
       })
-}()

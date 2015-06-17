@@ -9,6 +9,7 @@
   <link href="http://fonts.googleapis.com/css?family=Lato:400,700,900,900italic" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="styles/style.css" type="text/css" />
 </head>
+
 <body>
   <header>
     <!--Header -->
@@ -43,22 +44,22 @@
   </header>
   <section class="game">
     <!-- Guessing Section -->
-     <h2 id="feedback">Make your Guess!</h2>
+    <h2 id="feedback">Make your Guess!</h2>
     <form>
       <input type="text" name="userGuess" id="userGuess" class="text" maxlength="3" autocomplete="off" placeholder="Enter your Guess" required/>
       <input type="submit" id="guessButton" class="button" name="submit" value="Guess" />
     </form>
     <p>Guess #
       <span id="count"> 0 </span>!</p>
-
-    <ul id="guessList" class="guessBox clearfix">
-    </ul>
+    <div id="guessList" class="guessBox clearfix">
+      <div id="guess"></div>
+    </div>
 
   </section>
   <!-- JavaScript -->
   <script src="jquery-1.11.3.min.js" type="text/javascript"></script>
   <script src="game.js" type="text/javascript"></script>
-<!--   // <script src="app.js" type="text/javascript"></script> -->
+  <!--   // <script src="app.js" type="text/javascript"></script> -->
 </body>
 
 </html>
